@@ -6,7 +6,7 @@ create table artikli(
     sifra       int not null primary key auto_increment,
     naziv       varchar(50),
     cijena      decimal(20,2),
-    stanje      boolean
+    kolicina    char(10)
 );
 
 create table osoba(
@@ -19,8 +19,8 @@ create table osoba(
 );
 
 create table lokacija(
+    sifra       int not null primary key auto_increment,
     adresa      varchar(50),
-    email       varchar(50),
     telefon     varchar(50)
 );
 
@@ -29,18 +29,43 @@ create table prodavac(
     osoba       int not null
 );
 
-create table administrator(
+create table kupac(
     sifra       int not null primary key auto_increment,
-    osoba       int not null
+    osoba       int not null,
+    lokacija    int not null
+);
+
+create table narudba(
+    sifra           int not null primary key auto_increment,
+    kupac           int not null,
+    iznos           decimal(20,2) not null,
+    datumnarudbe    datetime not null,
+    placanje        int not null
+);
+
+create table placanje(
+    sifra       int not null primary key auto_increment,
+    vrsta       varchar(50)
+);
+
+create table kosarica(
+    sifra       int not null primary key auto_increment,
+    artikli     int not null,
+    kolicina    char(3) not null,
+    narudba     int not null
 );
 
 
 alter table prodavac add foreign key (osoba) references osoba(sifra);
-alter table administrator add foreign key (osoba) references osoba(sifra);
+alter table kupac add foreign key (osoba) references osoba(sifra);
+alter table narudba add foreign key (kupac) references kupac(sifra);
+alter table kosarica add foreign key (narudba) references narudba(sifra);
+alter table narudba add foreign key (placanje) references placanje(sifra);
+alter table kupac add foreign key (lokacija) references lokacija(sifra);
+alter table kosarica add foreign key (artikli) references artikli(sifra);
 
 insert into osoba(sifra,oib,email,ime,prezime,iban)
 values 
-(null,'26475874657','administrator42@gmail.com','Martina','Martinić',null),
 (null,'12345678911',null,'Ivan','Ivić',null),
 (null,'23147569873','Matija123@gmail.com','Matija','Matijevič',null);
 
@@ -48,12 +73,6 @@ insert into prodavac(sifra,osoba)
 values
 (null,2),
 (null,3);
-
-insert into administrator(sifra,osoba)
-values (null,1);
-
-insert into lokacija(adresa,email,telefon)
-values ('Strossmayerova 67','trgovina1234@gmail.com','011/245-678');
 
 
 
