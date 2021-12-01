@@ -19,7 +19,6 @@ create table kupac(
 create table narudba(
     sifra           int not null primary key auto_increment,
     kupac           int not null,
-    iznos           decimal(20,2) not null,
     datumnarudbe    datetime not null,
     placanje        int not null,
     adresa          varchar(50),
