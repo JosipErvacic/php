@@ -11,7 +11,7 @@ create table artikli(
 
 create table kupac(
     sifra       int not null primary key auto_increment,
-    lokacija    int not null,
+    lokacija    varchar(50),
     ime         varchar(50),
     prezime     varchar(50)
 );
@@ -32,6 +32,7 @@ create table placanje(
 );
 
 create table kosarica(
+    cijena      decimal(20,2),
     sifra       int not null primary key auto_increment,
     artikli     int not null,
     kolicina    char(3) not null,
